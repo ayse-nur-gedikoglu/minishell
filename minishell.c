@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:00:54 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/11 06:40:19 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/17 20:25:32 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <signal.h>
 #include <stdlib.h>
 
-void	freeall(t_dt *dt)
+void	free_all(t_dt *dt)
 {
 	t_token	*sta;
 	t_token	*temp;
@@ -34,6 +34,7 @@ void	freeall(t_dt *dt)
 	dt->head = NULL;
 	free(dt->line);
 	reset_q(dt);
+	dt->pf = 0;
 }
 
 void	sigc(int x)
@@ -52,7 +53,7 @@ int	eof_addhist(char *start, char *cntl, t_dt *dt)
 		free(cntl);
 		rl_clear_history();
 		write(1, "exit\n", 6);
-		exit (0);
+		exit (ex_code(-1));
 	}
 	while (*cntl)
 	{
@@ -69,16 +70,6 @@ int	eof_addhist(char *start, char *cntl, t_dt *dt)
 	}
 	reset_q(dt);
 	return (0);
-}
-
-void	printer(t_token *token)
-{
-	while (token)
-	{
-		printf("TYPE= %d token=%s|*|\n", token->type, token->con);
-		printf("*******************************\n");
-		token = token->next;
-	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -98,16 +89,11 @@ int	main(int argc, char **argv, char **envp)
 		dt.line = readline("\033[0;35m(ElShellito) \033[0m");
 		if (eof_addhist(dt.line, dt.line, &dt))
 			continue ;
-		if (cntlline(&dt, dt.line))
-		{
-			work_again(&dt);
+		if (parser(&dt, dt.line))
 			continue ;
-		}
-		dt.sta = dt.line;
-		parser(&dt, dt.sta);
-		printer(*(dt.head));
-		//execute(&dt,*(dt.head), envp);
-		freeall(&dt);
+		env_check(&dt);
+		exe(&dt,*(dt.head));
+		free_all(&dt);
 	}
 	rl_clear_history();
 	return (0);

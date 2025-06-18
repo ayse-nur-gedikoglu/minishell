@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 23:47:44 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/09 22:36:07 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/16 06:15:34 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	dt_init(t_dt *dt, char **argv, char **envp)
 	dt->dq = 0;
 	dt->w = 0;
 	dt->flag = 0;
+	dt->e_val = NULL;
 	dt->line = NULL;
 	dt->head = NULL;
-	dt->envadded = NULL;
+	dt->c_arr = NULL;
+	dt->p_command = NULL;
+	dt->pf = 0;
 }

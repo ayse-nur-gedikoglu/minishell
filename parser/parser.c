@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:27:50 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/09 08:26:59 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/17 20:25:24 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 void	tok_op(t_dt *dt, char **cur, int type)
 {
 	if (3 == type)
+	{
+		dt->pf = 1;
 		token_add(dt, ntok(PIPE, NULL));
+	}
 	if (4 == type)
 		token_add(dt, ntok(INPUT, NULL));
 	if (5 == type)
@@ -108,8 +111,14 @@ void	env_check(t_dt *dt)
 	}
 }
 
-void	parser(t_dt *dt, char *cur)
+int	parser(t_dt *dt, char *cur)
 {
+	if (cntlline(dt, dt->line))
+	{
+		work_again(dt);
+		return (1);
+	}
+	dt->sta = dt->line;
 	while (1)
 	{
 		tok_space(&cur, dt);
@@ -128,5 +137,5 @@ void	parser(t_dt *dt, char *cur)
 		cur++;
 		dt->sta = cur;
 	}
-	env_check(dt);
+	return (0);
 }

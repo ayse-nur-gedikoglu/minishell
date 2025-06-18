@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 06:32:20 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/01 17:03:17 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/14 22:15:01 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,6 @@ static int	ft_null_control(char **strs, int i)
 		return (1);
 	}
 	return (0);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	counter;
-
-	counter = 0;
-	if ((char)c == '\0')
-		return ((char *)&s[ft_strlen(s)]);
-	while (s[counter])
-	{
-		if (s[counter] == (char)c)
-			return (((char *)&s[counter]));
-		counter++;
-	}
-	return (NULL);
 }
 
 char	**ft_split(char const *s, char c)

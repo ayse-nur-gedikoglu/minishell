@@ -15,14 +15,14 @@
 
 int	greatcntl(char *c)
 {
-	if(*c == '>')
+	if (*c == '>')
 		c++;
 	while (*c)
 	{
 		if (*c == ' ')
 		{
 			c++;
-			continue;
+			continue ;
 		}
 		else if (*c == '|' || *c == '>' || *c == '<')
 		{
@@ -38,14 +38,14 @@ int	greatcntl(char *c)
 
 int	lowercntl(char *c)
 {
-	if(*c == '<')
+	if (*c == '<')
 		c++;
 	while (*c)
 	{
 		if (*c == ' ')
 		{
 			c++;
-			continue;
+			continue ;
 		}
 		else if (*c == '|' || *c == '>' || *c == '<')
 		{
@@ -89,7 +89,7 @@ int	cntlline(t_dt *dt, char *c)
 	if (*dt->line == '\0')
 		return (1);
 	tab_replacer(dt);
-	if (quote_cntl(dt, dt->line) || first_pipe(dt->line) )
+	if (quote_cntl(dt, dt->line) || first_pipe(dt->line))
 		return (1);
 	while (*c)
 	{

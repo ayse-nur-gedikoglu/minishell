@@ -6,14 +6,14 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 23:08:54 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/09 08:33:12 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/16 07:15:27 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_cd(t_dt *dt)
+int	ft_cd(t_dt *dt)
 {
 	(void)dt;
-	return ;
+	return (0);
 }

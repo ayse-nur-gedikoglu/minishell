@@ -6,14 +6,14 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 23:09:57 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/09 08:34:06 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/16 07:16:32 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_unset(t_dt *dt)
+int	ft_unset(t_dt *dt)
 {
 	(void)dt;
-	return ;
+	return (0);
 }

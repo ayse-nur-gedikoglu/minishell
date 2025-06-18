@@ -6,14 +6,14 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 05:43:19 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/03 11:53:39 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/16 07:09:16 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <stdio.h>
 
-void	ft_env(t_dt *dt)
+int	ft_env(t_dt *dt)
 {
 	char	**temp;
 
@@ -22,4 +22,5 @@ void	ft_env(t_dt *dt)
 	{
 		printf("%s\n",*temp++);
 	}
+	return (0);
 }

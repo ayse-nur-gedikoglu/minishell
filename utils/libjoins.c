@@ -6,11 +6,27 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 16:42:47 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/03 11:34:53 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/14 22:09:54 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	counter;
+
+	counter = 0;
+	if ((char)c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[counter])
+	{
+		if (s[counter] == (char)c)
+			return (((char *)&s[counter]));
+		counter++;
+	}
+	return (NULL);
+}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

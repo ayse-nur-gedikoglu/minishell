@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:57:20 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/09 07:28:04 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/17 20:18:01 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	}
 	return (str);
 }
+
 int	ft_atoi(const char *str)
 {
 	int	d;
