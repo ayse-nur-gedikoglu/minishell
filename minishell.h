@@ -110,5 +110,4 @@ char	*c_exist(t_dt *dt, char *cmd, char **envp);
 void	freeandleave(t_dt *dt);
 void	handle_redir(t_token *tok);
 
-
 #endif

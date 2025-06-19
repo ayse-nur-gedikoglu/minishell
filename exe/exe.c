@@ -21,6 +21,8 @@ int check_buildin(t_dt *dt, char *s)
 {
 	if (!ft_strncmp(s, "echo", 5))
 		return (ft_echo(dt, 0, 1) == 0);
+	if (!ft_strncmp(s, "cd", 3))
+    	return (ft_cd(dt, dt->c_arr, 0, NULL) == 0);
 	if (!ft_strncmp(s, "pwd", 4))
 		return (ft_pwd() == 0);
 	if (!ft_strncmp(s, "export", 7))
