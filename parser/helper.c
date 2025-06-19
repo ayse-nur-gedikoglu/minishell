@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 23:47:44 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/16 06:15:34 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/19 07:53:25 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,6 @@ void	dt_init(t_dt *dt, char **argv, char **envp)
 	dt->c_arr = NULL;
 	dt->p_command = NULL;
 	dt->pf = 0;
+	dt->oldpwd = NULL;
+	dt->home = ft_strdup(getenv("HOME"));
 }

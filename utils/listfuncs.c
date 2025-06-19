@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:52:57 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/17 20:09:59 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:11:44 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,3 @@ t_token	*ntok(int type, void *con)
 	new->next = NULL;
 	return (new);
 }
-

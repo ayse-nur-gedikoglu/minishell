@@ -1,22 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exe.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/13 14:03:02 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/17 20:14:14 by etorun           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../minishell.h"
 #include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <readline/readline.h>
 
-t_token	*c_executer(t_dt *dt, t_token *start)
+t_token *c_executer(t_dt *dt, t_token *start)
 {
-	int				counts[2];
-	static t_token	*keeper;
+	int counts[2];
+	static t_token *keeper;
 
 	if (!keeper)
 		keeper = start;
@@ -25,75 +17,92 @@ t_token	*c_executer(t_dt *dt, t_token *start)
 	return (keeper);
 }
 
-void	forker(t_dt *dt, int type, t_token *status, int *fd)
+int check_buildin(t_dt *dt, char *s)
 {
-	int	pid;
-	int	e_code;
-
-	pid = fork();
-	if (pid == 0)
+	if (!ft_strncmp(s, "echo", 5))
+		return (ft_echo(dt, 0, 1) == 0);
+	if (!ft_strncmp(s, "pwd", 4))
+		return (ft_pwd() == 0);
+	if (!ft_strncmp(s, "export", 7))
 	{
-		if (status)
-		{
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
-		}
-		if (type == 1)
-			execve(dt->p_command, dt->c_arr, dt->envp);
-		execve(dt->c_arr[0], dt->c_arr, dt->envp);
-	}
-	wait(&e_code);
-	ex_code(e_code % 255);
-}
-
-int	check_buildin(t_dt *dt, char *s)
-{
-	int	ret_val;
-
-	ret_val = 1;
-	if (!ft_strncmp(s, "echo", 5) && dt->pf == 0)
-		ret_val = ft_echo(dt, 0, 1);
-	else if (!ft_strncmp(s, "cd", 3) && dt->pf == 0)
-		ret_val = ft_cd(dt);
-	else if (!ft_strncmp(s, "pwd", 4) && dt->pf == 0)
-		ret_val = ft_pwd();
-	else if (!ft_strncmp(s, "export", 7) && dt->pf == 0)
 		ft_export(dt);
-	else if (!ft_strncmp(s, "unset", 6) && dt->pf == 0)
+		return 0;
+	}
+	if (!ft_strncmp(s, "unset", 6))
+	{
 		ft_unset(dt);
-	else if (!ft_strncmp(s, "env", 4) && dt->pf == 0)
-		ft_env(dt);
-	else if (!ft_strncmp(s, "exit", 5) && dt->pf == 0)
+		return 0;
+	}
+	if (!ft_strncmp(s, "env", 4))
+		return (ft_env(dt) == 0);
+	if (!ft_strncmp(s, "exit", 5))
+	{
 		ft_exit(dt);
-	if (!ret_val)
-		free_command(dt);
-	return (ret_val);
+		return 0;
+	}
+	return 1;
 }
 
-int	exe(t_dt *dt, t_token *cur)
+static void do_exec(t_dt *dt)
 {
-	t_token	*status;
-	int		fd[2];
+	if (ft_strchr(dt->c_arr[0], '/'))
+		execve(dt->c_arr[0], dt->c_arr, dt->envp);
+	else if ((dt->p_command = c_exist(dt, dt->c_arr[0], dt->envp)))
+		execve(dt->p_command, dt->c_arr, dt->envp);
+	else
+		e_ex(": command not found\n", dt->c_arr[0]);
+	exit(127);
+}
 
-	dt->std_in = dup(STDIN_FILENO);
-	dt->std_out = dup(STDOUT_FILENO);
-	while (1)
+static int child_proc(t_dt *dt, int *fd, int in_fd, t_token *status)
+{
+	if (in_fd != STDIN_FILENO)
 	{
-		status = c_executer(dt, cur);
-		if (!check_buildin(dt, dt->c_arr[0]))
-			break ;
-		if (status)
-			pipe(fd);
-		if (ft_strchr(dt->c_arr[0], '/'))
-			forker(dt, 0, status, fd);
-		else if (c_exist(dt, dt->c_arr[0], dt->envp))
-			forker(dt, 1, status, fd);
-		else
-			e_ex(": command not found\n", dt->c_arr[0]);
-		free_command(dt);
-		if (!status)
-			break ;
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
 	}
-	dup2(dt->std_in, STDIN_FILENO);
+	if (status)
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	if (dt->head)
+		handle_redir(*dt->head);
+	if (check_buildin(dt, dt->c_arr[0]) == 0)
+		exit(0);
+	do_exec(dt);
+	return (0);
+}
+
+int exe(t_dt *dt, t_token *cur)
+{
+	int fd[2];
+	int in_fd;
+	int status;
+	pid_t pid;
+	t_token *status_tok;
+	int orig_in;
+
+	orig_in = dup(STDIN_FILENO);
+	in_fd = dup(STDIN_FILENO);
+	while (cur)
+	{
+		status_tok = c_executer(dt, cur);
+		pipe(fd);
+		pid = fork();
+		if (pid == 0)
+			child_proc(dt, fd, in_fd, status_tok);
+		close(fd[1]);
+		if (in_fd != STDIN_FILENO)
+			close(in_fd);
+		in_fd = fd[0];
+		while (cur && cur->type != PIPE)
+			cur = cur->next;
+		if (cur)
+			cur = cur->next;
+	}
+	while (wait(&status) > 0)
+		ex_code(WEXITSTATUS(status));
+	dup2(orig_in, STDIN_FILENO);
+	close(orig_in);
 	return (0);
 }

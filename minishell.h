@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:02:07 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/17 20:25:15 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/19 18:55:03 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct s_dt
 	int		cur_write;
 	size_t	flag;
 	int		pf;
+	char	*oldpwd;
+	char	*home;
 }	t_dt;
 
 size_t	ft_strlen(const char *s);
@@ -97,7 +99,7 @@ char	*q_remover(char *sta, char *cur, char *new, t_dt *dt);
 int		ft_pwd(void);
 int		ft_env(t_dt *dt);
 int		ft_echo(t_dt *dt, int flag, int i);
-int		ft_cd(t_dt *dt);
+int		ft_cd(t_dt *dt, char **c_arr, int flag, char *curpwd);
 int		ft_export(t_dt *dt);
 int		ft_unset(t_dt *dt);
 int		ft_exit(t_dt *dt);
@@ -105,4 +107,8 @@ int		exe(t_dt *dt, t_token *cur);
 t_token	*counttoken(int *counts, t_token *tok);
 t_token	*c_maker(t_dt *dt, int x, int start, t_token *tok);
 char	*c_exist(t_dt *dt, char *cmd, char **envp);
+void	freeandleave(t_dt *dt);
+void	handle_redir(t_token *tok);
+
+
 #endif

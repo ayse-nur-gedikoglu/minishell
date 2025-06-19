@@ -6,7 +6,7 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:00:54 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/17 20:25:32 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/19 17:54:51 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	eof_addhist(char *start, char *cntl, t_dt *dt)
 	if (cntl == NULL)
 	{
 		free(cntl);
-		rl_clear_history();
+		freeandleave(dt);
 		write(1, "exit\n", 6);
 		exit (ex_code(-1));
 	}
@@ -95,6 +95,6 @@ int	main(int argc, char **argv, char **envp)
 		exe(&dt,*(dt.head));
 		free_all(&dt);
 	}
-	rl_clear_history();
+	freeandleave(&dt);
 	return (0);
 }

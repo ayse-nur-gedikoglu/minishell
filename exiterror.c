@@ -6,13 +6,14 @@
 /*   By: etorun <etorun@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 05:51:41 by etorun            #+#    #+#             */
-/*   Updated: 2025/06/17 20:18:38 by etorun           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:12:12 by etorun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 #include <stdlib.h>
+#include <readline/readline.h>
 
 int	ex_code(int new)
 {
@@ -62,4 +63,9 @@ void	e_ex(char *s, char *special)
 	}
 }
 
-
+void	freeandleave(t_dt *dt)
+{
+	rl_clear_history();
+	free(dt->oldpwd);
+	free(dt->home);
+}
