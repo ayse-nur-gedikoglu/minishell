@@ -108,6 +108,4 @@ t_token	*counttoken(int *counts, t_token *tok);
 t_token	*c_maker(t_dt *dt, int x, int start, t_token *tok);
 char	*c_exist(t_dt *dt, char *cmd, char **envp);
 void	freeandleave(t_dt *dt);
-void	handle_redir(t_token *tok);
-
 #endif
